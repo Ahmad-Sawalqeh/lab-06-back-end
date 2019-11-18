@@ -26,5 +26,16 @@ function Location(data) {
     this.lng = data.results[0].geometry.location.lng;
 }
 
+server.get('/weather', (request, response) => {
+    const weatherData = require('./data/darksky.json');
+    const weather = new Weather(weatherData);
+    response.status(200).json(weather);
+})
+
+function Weather(jsonData) {
+    this.forcast = jsonData.daily.summary;
+    this.time = new Date(jsonData.daily.data[0].time*1000).toDateString();
+}
+
 
 server.listen(PORT, () => console.log(`app listening on ${PORT}`)) 
