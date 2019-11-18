@@ -37,5 +37,17 @@ function Weather(jsonData) {
     this.time = new Date(jsonData.daily.data[0].time*1000).toDateString();
 }
 
+server.get('/foo',(request,response) =>{
+    throw new Error('ops');
+})
+
+server.use('*', (request, response) => {
+    response.status(404).send('Not Found')
+})
+
+server.use((error,request,response) => {
+    response.status(500).send(error)
+})
+
 
 server.listen(PORT, () => console.log(`app listening on ${PORT}`)) 
