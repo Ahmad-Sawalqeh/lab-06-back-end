@@ -48,9 +48,10 @@ server.get('/', (request, response) => {
 server.use('*', (request, response) => {
     response.status(404).send('can not be reach');
 });
+
 server.use((error, request, response) => {
     response.status(500).send('we are sorry')
-})
+});
 
 
 server.listen(PORT, () => console.log(`app listening on ${PORT}`)) 
