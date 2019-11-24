@@ -27,27 +27,31 @@ function Location(data) {
 }
 
 server.get('/weather', (request, response) => {
+
     const weatherData = require('./data/darksky.json');
-    const weather = new Weather(weatherData);
-    response.status(200).json(weather);
+    const weatherEach = weatherData.daily.data.map((day) => {
+        const weather = new Weather(day);
+        return weather
+    })
+    response.status(200).json(weatherEach);
 })
 
 function Weather(jsonData) {
-    this.forcast = jsonData.daily.summary;
-    this.time = new Date(jsonData.daily.data[0].time*1000).toDateString();
+    this.forcast = jsonData.summary;
+    this.time = new Date(jsonData.time * 1000).toDateString();
 }
 
-server.get('/foo',(request,response) =>{
-    throw new Error('ops');
+server.get('/', (request, response) => {
+    response.status(200).send('hello from Tafila ')
 })
 
 server.use('*', (request, response) => {
-    response.status(404).send('Not Found')
-})
+    response.status(404).send('can not be reach');
+});
 
-server.use((error,request,response) => {
-    response.status(500).send(error)
-})
+server.use((error, request, response) => {
+    response.status(500).send('we are sorry')
+});
 
 
 server.listen(PORT, () => console.log(`app listening on ${PORT}`)) 
